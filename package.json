@@ -4,7 +4,7 @@
   "main": "index.js",
   "gypfile": true,
   "scripts": {
-    "start": "node example/index.js",
+    "test": "node example/index.js",
     "build:dev": "node-gyp -j 16 build --debug",
     "build": "node-gyp -j 16 build",
     "rebuild:dev": "node-gyp -j 16 rebuild --debug",
