@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ifc": "ifc",
+        "*.json": "json",
+        "string": "cpp"
+    }
+}
