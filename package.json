@@ -1,20 +1,35 @@
 {
-  "name": "crossdb",
-  "version": "1.0.0",
+  "name": "@croosdb/crossdb-nodejs",
+  "version": "1.2.0",
   "main": "index.js",
+  "author": "Efrem Ropelato",
+  "contributors":[
+    {
+      "name": "Efrem Ropelato",
+      "email": "efrem.ropelato@gmail.com",
+      "url": "https://efremropelato.github.io/"
+    }
+  ],
+  "license": "MIT",
+  "description": "CroosDB Nodejs driver",
+  "keywords": [],
   "gypfile": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:crossdb-org/crossdb-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/crossdb-org/crossdb-nodejs/issues"
+  },
   "scripts": {
     "test": "node example/index.js",
     "build:dev": "node-gyp -j 16 build --debug",
     "build": "node-gyp -j 16 build",
     "rebuild:dev": "node-gyp -j 16 rebuild --debug",
     "rebuild": "node-gyp -j 16 rebuild",
-    "clean": "node-gyp clean"
+    "clean": "node-gyp clean",
+    "install": "node-gyp rebuild"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "description": "",
   "dependencies": {
     "bindings": "^1.5.0",
     "node-addon-api": "^8.2.2"
