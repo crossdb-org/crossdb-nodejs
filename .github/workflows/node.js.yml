@@ -49,6 +49,7 @@ jobs:
           with:
             node-version: 20
             registry-url: https://registry.npmjs.org/
+        - run: pwd
         - run: |
             sudo apt-get -y update
             sudo apt-get -y install build-essential software-properties-common gcc gdb make
@@ -58,7 +59,7 @@ jobs:
               make build
               sudo make install
               cd ..
-        - run: rm -rfv croosdb
+        - run: rm -rfv ./croosdb
         - run: npm ci
         - run: npm run build --if-present
         - run: npm publish --access public
