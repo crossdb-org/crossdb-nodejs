@@ -58,7 +58,7 @@ jobs:
               make build
               sudo make install
               cd ..
-              rm -rfv croosdb
+        - run: rm -rfv croosdb
         - run: npm ci
         - run: npm run build --if-present
         - run: npm publish --access public
