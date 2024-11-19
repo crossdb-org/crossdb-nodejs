@@ -27,14 +27,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: |
-          sudo apt-get -y update 
+          sudo apt-get -y update
           sudo apt-get -y install build-essential software-properties-common gcc gdb make
-    - run:  | 
+    - run:  |
           git clone https://github.com/crossdb-org/crossdb.git
           cd crossdb
           make build
           sudo make install
-          cd .. 
+          cd ..
           rm -rfv crossdb
     - run: npm ci
     - run: npm run build --if-present
@@ -50,17 +50,18 @@ jobs:
             node-version: 20
             registry-url: https://registry.npmjs.org/
         - run: |
-            sudo apt-get -y update 
+            sudo apt-get -y update
             sudo apt-get -y install build-essential software-properties-common gcc gdb make
-        - run:  | 
+        - run:  |
               git clone https://github.com/crossdb-org/crossdb.git
               cd crossdb
               make build
               sudo make install
-              cd .. 
+              cd ..
+              rm -rfv croosdb
         - run: npm ci
         - run: npm run build --if-present
         - run: npm publish --access public
           env:
             NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-  
+
