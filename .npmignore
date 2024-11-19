@@ -2,3 +2,6 @@
 build/
 node_modules/
 example/
+.github/
+.vscode/
+croosdb/
