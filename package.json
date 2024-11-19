@@ -1,6 +1,6 @@
 {
   "name": "@croosdb/crossdb-nodejs",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "main": "index.js",
   "author": "Efrem Ropelato",
   "contributors":[
@@ -14,6 +14,7 @@
   "description": "CroosDB Nodejs driver",
   "keywords": [],
   "gypfile": true,
+  "homepage": "https://crossdb.org/",
   "repository": {
     "type": "git",
     "url": "git@github.com:crossdb-org/crossdb-nodejs.git"
