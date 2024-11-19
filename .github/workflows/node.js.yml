@@ -30,12 +30,12 @@ jobs:
           sudo apt-get -y update
           sudo apt-get -y install build-essential software-properties-common gcc gdb make
     - run:  |
-          cd ..
           git clone https://github.com/crossdb-org/crossdb.git
           cd crossdb
           make build
           sudo make install
-          cd crossdb-nodejs
+          cd ..
+          rm -rfv crossdb
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
@@ -53,12 +53,12 @@ jobs:
             sudo apt-get -y update
             sudo apt-get -y install build-essential software-properties-common gcc gdb make
         - run:  |
-              cd ..
               git clone https://github.com/crossdb-org/crossdb.git
               cd crossdb
               make build
               sudo make install
-              cd crossdb-nodejs
+              cd ..
+              rm -rfv crossdb
         - run: npm ci
         - run: npm run build --if-present
         - run: npm publish --access public
