@@ -1,23 +1,26 @@
-
+// Import the CrossDB module
 const CrossDB = require('../index');
 
+// Create an in-memory database instance
 const db = new CrossDB(':memory:');
 
 try {
-    // Create Table
+    // Create tables if they do not already exist
     db.exec("CREATE TABLE IF NOT EXISTS student (id INT PRIMARY KEY, name CHAR(16), age INT, class CHAR(16), score FLOAT, info VARCHAR(255))");
     db.exec("CREATE TABLE IF NOT EXISTS teacher (id INT PRIMARY KEY, name CHAR(16), age INT, info CHAR(255), INDEX (name))");
     db.exec("CREATE TABLE IF NOT EXISTS book (id INT PRIMARY KEY, name CHAR(64), author CHAR(32), count INT, INDEX (name))");
     console.log("Tables 'student','teacher' and 'book' created.");
-    // clean table
+
+    // Clean (empty) all tables
     db.exec("DELETE FROM student");
     db.exec("DELETE FROM teacher");
     db.exec("DELETE FROM book");
 
+    // Start a transaction
     db.begin();
     console.log("Begin transaction");
 
-    // Insert
+    // Insert sample data into the student, teacher, and book tables
     db.exec("INSERT INTO student (id,name,age,class,score) VALUES (1,'jack',10,'3-1',90),(2,'tom',11,'2-5',91),(3,'jack',11,'1-6',92),(4,'rose',10,'4-2',90),(5,'tim',10,'3-1',95)");
     db.exec("INSERT INTO student (id,name,age,class,score,info) VALUES (6,'Tony',10,'3-1',95,'%s')", "He is a boy.\nHe likes playing football.\nWe all like him!");
     db.exec("INSERT INTO student (id,name,age,class,score,info) VALUES (7,'Wendy',10,'3-1',95,'%s')", "She is a girl.\nShe likes cooking.\nWe all love her!");
@@ -25,52 +28,60 @@ try {
     db.exec("INSERT INTO book (id,name,author,count) VALUES (1,'Romeo and Juliet','Shakespeare',10),(2,'Pride and Prejudice','Austen',5),(3,'Great Expectations','Dickens',8),(4,'Sorrows of Young Werther','Von Goethe',4)");
     console.log("Data inserted.");
 
-    // Select
+    // Query to select all students
     let res = db.exec("SELECT * FROM student");
-    console.log("Select all student: ", res);
+    console.log("Select all students: ", res);
 
-    // Update
+    // Update a student's age and query the updated record
     db.exec("UPDATE student set age=9 WHERE id = 2");
-    console.log("Update age = 9 for student with id = 2");
+    console.log("Updated age to 9 for student with id = 2");
 
     res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
     console.log("Select student with id = 2: ", res);
 
+    // Delete a student and query the deleted record
     db.exec("DELETE FROM student WHERE id = 3");
-    console.log("User with ID 3 deleted.");
+    console.log("Deleted student with id = 3");
 
     res = db.exec("SELECT * from student WHERE id = 3");
     console.log("Select student with id = 3: ", res);
 
-    // Aggregation function
+    // Perform aggregation on the student table
     res = db.exec("SELECT COUNT(*),MIN(score),MAX(score),SUM(score),AVG(score) FROM student");
-    console.log("Select student's AGG COUNT,MIN,MAX,SUM,AVG: ", res);
+    console.log("Student aggregation (COUNT, MIN, MAX, SUM, AVG): ", res);
 
+    // Commit the transaction
     db.commit();
-    console.log("Commit transaction");
+    console.log("Transaction committed");
 
+    // Start a new transaction
     db.begin();
     console.log("Begin transaction");
-    // Update
+
+    // Update a student's age, query, and roll back the transaction
     db.exec("UPDATE student set age=15 WHERE id = 2");
-    console.log("Update age = 15 for student with id = 2");
-    // Select
-    res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
-    console.log("Select student with id = 2: ", res);
-    db.rollback();
-    console.log("Rollback transaction");
+    console.log("Updated age to 15 for student with id = 2");
+
     res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
     console.log("Select student with id = 2: ", res);
 
-    // Multi-Statements
+    db.rollback();
+    console.log("Transaction rolled back");
+
+    res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
+    console.log("Select student with id = 2 after rollback: ", res);
+
+    // Execute multiple statements and query the results
     res = db.exec("SELECT COUNT(*) as Count FROM student; SELECT id,name FROM student WHERE id=2");
-    console.log("Multi Select student: ", res);
+    console.log("Multi-statement select: ", res);
 
 } catch (err) {
+    // Handle errors, roll back any pending transaction, and log the error
     console.error("Error during operation:", err);
     db.rollback();
-    console.log("Rollback transaction");
+    console.log("Transaction rolled back due to error");
 } finally {
+    // Ensure the database connection is closed
     console.log("\nCrossDB Simulation Complete.");
     db.close();
     console.log("Database connection closed.");
