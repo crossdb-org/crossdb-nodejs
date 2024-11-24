@@ -30,25 +30,33 @@ try {
 
     // Query to select all students
     let res = db.exec("SELECT * FROM student");
-    console.log("Select all students: ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Select all students: ", element);
+    });
 
     // Update a student's age and query the updated record
     db.exec("UPDATE student set age=9 WHERE id = 2");
     console.log("Updated age to 9 for student with id = 2");
 
     res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
-    console.log("Select student with id = 2: ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Select student with id = 2: ", element);
+    });
 
     // Delete a student and query the deleted record
     db.exec("DELETE FROM student WHERE id = 3");
     console.log("Deleted student with id = 3");
 
     res = db.exec("SELECT * from student WHERE id = 3");
-    console.log("Select student with id = 3: ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Select student with id = 3: ", element);
+    });
 
     // Perform aggregation on the student table
     res = db.exec("SELECT COUNT(*),MIN(score),MAX(score),SUM(score),AVG(score) FROM student");
-    console.log("Student aggregation (COUNT, MIN, MAX, SUM, AVG): ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Student aggregation (COUNT, MIN, MAX, SUM, AVG): ", element);
+    });
 
     // Commit the transaction
     db.commit();
@@ -63,17 +71,23 @@ try {
     console.log("Updated age to 15 for student with id = 2");
 
     res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
-    console.log("Select student with id = 2: ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Select student with id = 2: ", element);
+    });
 
     db.rollback();
     console.log("Transaction rolled back");
 
     res = db.exec("SELECT id,name,age,class,score from student WHERE id = 2");
-    console.log("Select student with id = 2 after rollback: ", res);
+    res.forEach((element,i) => {
+        console.log(i,"Select student with id = 2 after rollback: ", element);
+    });
 
     // Execute multiple statements and query the results
-    res = db.exec("SELECT COUNT(*) as Count FROM student; SELECT id,name FROM student WHERE id=2");
-    console.log("Multi-statement select: ", res);
+    res = db.exec("SELECT COUNT(*) as Count FROM student; SELECT id, name, age FROM student WHERE id=2;SELECT MIN(score) as min, MAX(score) as max, SUM(score) as sum, AVG(score) as avg FROM student");
+    res.forEach((element,i) => {
+        console.log(i,"Multi-statement select: ", element);
+    });
 
 } catch (err) {
     // Handle errors, roll back any pending transaction, and log the error
