@@ -30,7 +30,8 @@ public:
                                            InstanceMethod("close", &Connection::Close),
                                            InstanceMethod("begin", &Connection::Begin),
                                            InstanceMethod("commit", &Connection::Commit),
-                                           InstanceMethod("rollback", &Connection::Rollback)});
+                                           InstanceMethod("rollback", &Connection::Rollback),
+                                           InstanceMethod("version", &Connection::Version)});
 
         exports.Set("Connection", func);
         return exports;
@@ -173,6 +174,13 @@ private:
             Napi::Error::New(info.Env(), "Failed to rollback transaction").ThrowAsJavaScriptException();
         }
         return info.Env().Null();
+    }
+
+    Napi::Value Version(const Napi::CallbackInfo &info)
+    {
+        Napi::Env env = info.Env();
+        std::string vv = xdb_version();
+        return Napi::String::New(env, vv);
     }
 };
 

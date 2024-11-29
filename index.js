@@ -1,5 +1,5 @@
 // Import the 'bindings' module to link the compiled native addon 'crossdb'
-const crossdb = require('bindings')('crossdb');  // Link the compiled addon
+const crossdb = require('bindings')('crossdb'); // Link the compiled addon 
 
 // Define the CrossDB class to manage database operations
 class CrossDB {
@@ -9,6 +9,7 @@ class CrossDB {
    */
   constructor(dbPath) {
     this.conn = new crossdb.Connection(dbPath); // Create a new connection to the database
+    this.pkgVersion = require('./package.json').version;
   }
 
   /**
@@ -40,13 +41,24 @@ class CrossDB {
   commit() {
     this.conn.commit(); // Commit the transaction
   }
-
-  /**
-   * Rollsback the current transaction
-   */
-  rollback() {
-    this.conn.rollback(); // Rollback the transaction
-  }
+  
+    /**
+     * Rollsback the current transaction
+     */
+    rollback() {
+      this.conn.rollback(); // Rollback the transaction
+    }
+  
+    /**
+     * Get CroosDB version
+     */
+    version() {
+      return {
+        "CroosDB": this.conn.version(), // Get CroosDB version
+        "Package": this.pkgVersion, // Node.js package version
+        "Platform": process.platform // Platform information
+      };
+    }
 }
 
 // Export the CrossDB class as a module
