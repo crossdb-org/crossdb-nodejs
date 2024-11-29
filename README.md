@@ -141,5 +141,7 @@ try {
     console.log("\nCrossDB Simulation Complete.");
     db.close();
     console.log("Database connection closed.");
+    const version = db.version()
+    console.log("CroosDB version: ", version);
 }
 ```

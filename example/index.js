@@ -101,5 +101,4 @@ try {
     console.log("Database connection closed.");
     const version = db.version()
     console.log("CroosDB version: ", version);
-
 }
